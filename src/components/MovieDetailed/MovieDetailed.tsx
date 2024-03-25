@@ -4,22 +4,22 @@ import { MovieDetails } from '../../interface/Movie'
 import getMovieDetails from '../../services/getMovieDetails/getMovieDetails'
 
 //Mui
-import { Modal, Paper } from '@mui/material'
+import {
+  Button,
+  Card,
+  CardActions,
+  CardContent,
+  CardMedia,
+  Modal,
+  Skeleton,
+} from '@mui/material'
+import { useSearchContext } from '../../hooks/useSearchContext'
 
-interface MovieDetailedProps {
-  chosenMovieId: string
-  setErrorMsg: React.Dispatch<React.SetStateAction<string | undefined>>
-  clickedModal: boolean
-  setClickedModal: React.Dispatch<React.SetStateAction<boolean>>
-}
+const MovieDetailed: React.FC = () => {
+  const { clickedModal, chosenMovieId, setErrorMsg, setClickedModal } =
+    useSearchContext()
 
-const MovieDetailed: React.FC<MovieDetailedProps> = ({
-  chosenMovieId,
-  setErrorMsg,
-  clickedModal,
-  setClickedModal,
-}) => {
-  const [isLoading, setIsLoading] = useState<boolean>(true)
+  const [isLoading, setIsLoading] = useState<boolean>(false)
   const [movieDetails, setMovieDetails] = useState<MovieDetails | undefined>(
     undefined
   )
@@ -49,11 +49,7 @@ const MovieDetailed: React.FC<MovieDetailedProps> = ({
     }
 
     requstDetails()
-
-    return () => {
-      setIsLoading(true)
-    }
-  }, [chosenMovieId, setErrorMsg, clickedModal])
+  }, [chosenMovieId, clickedModal, setErrorMsg])
 
   const style = {
     position: 'absolute',
@@ -61,12 +57,6 @@ const MovieDetailed: React.FC<MovieDetailedProps> = ({
     left: '50%',
     transform: 'translate(-50%, -50%)',
     width: 400,
-    bgcolor: 'background.paper',
-    border: '2px solid #000',
-    background: 'no-repeat',
-    backgroundSize: 'cover',
-    boxShadow: 24,
-    p: 4,
   }
 
   const handleClose = () => {
@@ -75,26 +65,38 @@ const MovieDetailed: React.FC<MovieDetailedProps> = ({
   }
 
   return (
-    clickedModal && (
+    clickedModal &&
+    chosenMovieId && (
       <Modal open onClose={handleClose}>
         <>
           {isLoading && (
-            <Paper sx={style} style={{ backgroundImage: 'none' }}>
-              <p style={{ textAlign: 'center' }}>Loading</p>
-            </Paper>
+            <Card sx={style} style={{ height: '580px' }}>
+              <Skeleton height={200} />
+              <CardContent>
+                {Array.from({ length: 10 }).map((_, i) => (
+                  <Skeleton key={i} />
+                ))}
+              </CardContent>
+              <CardActions>
+                <Skeleton width={'15%'} />
+              </CardActions>
+            </Card>
           )}
           {!isLoading && movieDetails && (
-            <Paper
-              sx={style}
-              style={{ backgroundImage: `url(${movieDetails.Poster})` }}
-            >
-              <p>
-                {movieDetails.Title} - {movieDetails.Year}
-              </p>
-              <p>{movieDetails.Plot}</p>
-              {/* <img src={movieDetails.Poster} /> */}
-              <p>{movieDetails.Actors}</p>
-            </Paper>
+            <Card sx={style}>
+              <CardMedia sx={{ height: '200px' }} image={movieDetails.Poster} />
+              <CardContent>
+                <h3>{movieDetails.Title}</h3>
+                <p>{movieDetails.Plot}</p>
+                <p>
+                  Cast <br /> {movieDetails.Actors}
+                </p>
+                <p>{movieDetails.Writer}</p>
+              </CardContent>
+              <CardActions>
+                <Button size='small'>Read more</Button>
+              </CardActions>
+            </Card>
           )}
         </>
       </Modal>

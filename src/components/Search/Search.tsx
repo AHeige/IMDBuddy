@@ -11,37 +11,37 @@ import YearPicker from '../YearPicker/YearPicker'
 //Services
 import getMovies from '../../services/getMovies/getMovies'
 
-//Intercaes
-import { Movie } from '../../interface/Movie'
+import { useSearchContext } from '../../hooks/useSearchContext'
 
-interface SearchProps {
-  movieData: (data: Movie[]) => void
-  setIsLoading: React.Dispatch<React.SetStateAction<boolean>>
-  setErrorMsg: React.Dispatch<React.SetStateAction<string | undefined>>
-}
-
-const Search: React.FC<SearchProps> = ({
-  movieData,
-  setIsLoading,
-  setErrorMsg,
-}) => {
+const Search: React.FC = () => {
+  const { setIsLoading, setTotalPages, setMovies, setErrorMsg } =
+    useSearchContext()
   //State management
   const [searchText, setSearchText] = useState('')
   const [searchDate, setSearchDate] = useState<number | null>(null)
 
+  //Calculating pages for Pagination
+  const calculatePages = (totalResults: string) => {
+    const resultsPerPage = 10
+    const total = parseInt(totalResults)
+    const pages = Math.ceil(total / resultsPerPage)
+    return pages
+  }
+
   const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
-    setIsLoading(true)
     event.preventDefault()
+    setIsLoading(true)
     try {
-      const response = await getMovies(searchText, searchDate)
+      const response = await getMovies(searchText, searchDate, 1)
       if (response.data.Response === 'True') {
-        movieData(response.data.Search)
+        setTotalPages(calculatePages(response.data.totalResults))
+        setMovies(response.data.Search)
       } else {
         setErrorMsg(response.data.Error)
-        movieData([])
       }
       setIsLoading(false)
     } catch (err) {
+      setErrorMsg(err)
       throw new Error(err)
     }
   }

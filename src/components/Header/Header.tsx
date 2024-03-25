@@ -12,6 +12,11 @@ interface HeaderProps {
   children?: ReactNode
 }
 
+/**
+ * This component render the header with a Toolbar
+ * @param {ChildNode} children
+ * @returns {ReactNode} A react element that renders an header with Toolbar and child elements
+ */
 const Header: React.FC<HeaderProps> = ({ children }) => {
   return (
     <>
