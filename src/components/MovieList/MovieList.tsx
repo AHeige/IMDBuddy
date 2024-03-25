@@ -1,34 +1,53 @@
 import React from 'react'
 
 //Mui
-import {
-  Grid,
-  Card,
-  Button,
-  CardActions,
-  CardContent,
-  CardMedia,
-  Skeleton,
-  Pagination,
-} from '@mui/material'
-
-import nopic from '../../assets/no-pic.jpg'
+import { Chip, Grid, Pagination } from '@mui/material'
 
 //Services
-// import getMovies from '../../services/getMovies/getMovies'
+import getMovies from '../../services/getMovies/getMovies'
+
+//Context
 import { useSearchContext } from '../../hooks/useSearchContext'
 
-const MovieList: React.FC = () => {
-  const { totalPages, isLoading, movies, setChosenMovieId, setClickedModal } =
-    useSearchContext()
+//Loading component
+import MovieListSkeleton from './components/MovieListSkeleton'
+import MovieListContent from './components/MovieListContent'
+import { useFavourites } from '../../hooks/useFavourites'
 
-  const handleClick = async (imdbID: string) => {
-    setChosenMovieId(imdbID)
-    setClickedModal(true)
-  }
+/**
+ * MovieList consumes the searchresult generated in Search component
+ * @returns
+ */
+const MovieList: React.FC = () => {
+  const {
+    setErrorMsg,
+    totalPages,
+    isLoading,
+    setIsLoading,
+    movies,
+    setMovies,
+    searchText,
+    searchDate,
+  } = useSearchContext()
+
+  const { favourites } = useFavourites()
 
   const onPagination = async (page: number) => {
-    console.log(page)
+    setIsLoading(true)
+    try {
+      const response = await getMovies(searchText, searchDate, page)
+      if (response.data.Response === 'True') {
+        setIsLoading(false)
+        setMovies(response.data.Search)
+      } else {
+        setIsLoading(false)
+        setErrorMsg(`Could not load movies: ${response.data.Error}`)
+        throw new Error(response.data.Error)
+      }
+    } catch (err) {
+      setIsLoading(false)
+      throw new Error(err)
+    }
   }
 
   return (
@@ -37,62 +56,26 @@ const MovieList: React.FC = () => {
       spacing={2}
       sx={{ display: 'flex', justifyContent: 'center', marginTop: 0 }}
     >
-      <Grid item xs={12} sx={{ display: 'flex', justifyContent: 'center' }}>
-        <Pagination
-          onChange={(_, page) => onPagination(page)}
-          count={totalPages}
-          variant='outlined'
-          color='secondary'
-        />
-      </Grid>
-      {isLoading ? (
+      {/* Favourites */}
+      {!movies && favourites.length > 0 && (
         <>
-          {/* Skeleton for loading effect */}
-          {Array.from({ length: 10 }).map((_, i) => {
-            return (
-              <Grid item key={i}>
-                <Skeleton
-                  sx={{ padding: 0, margin: 0 }}
-                  width={'350px'}
-                  height={'140px'}
-                />
-                <CardContent>
-                  <Skeleton />
-                </CardContent>
-                <CardActions>
-                  <Skeleton width={'20%'} />
-                </CardActions>
-              </Grid>
-            )
-          })}
-        </>
-      ) : (
-        <>
-          {movies &&
-            movies.map((movie) => {
-              const pic = movie.Poster === 'N/A' ? nopic : movie.Poster
-
-              return (
-                <Grid item key={movie.imdbID}>
-                  <Card sx={{ width: '350px' }}>
-                    <CardMedia sx={{ height: '140px' }} image={pic} />
-                    <CardContent>
-                      <p>{movie.Title}</p>
-                    </CardContent>
-                    <CardActions>
-                      <Button
-                        onClick={() => handleClick(movie.imdbID)}
-                        size='small'
-                      >
-                        Read more
-                      </Button>
-                    </CardActions>
-                  </Card>
-                </Grid>
-              )
-            })}
+          <Chip sx={{ marginTop: '1em' }} color='success' label='Favourites' />
+          <MovieListContent movies={favourites} />
         </>
       )}
+
+      {/* Search result */}
+      <Grid item xs={12} sx={{ display: 'flex', justifyContent: 'center' }}>
+        {totalPages && movies && (
+          <Pagination
+            onChange={(_, page) => onPagination(page)}
+            count={totalPages}
+            variant='outlined'
+            color='secondary'
+          />
+        )}
+      </Grid>
+      {isLoading ? <MovieListSkeleton /> : <MovieListContent movies={movies} />}
     </Grid>
   )
 }

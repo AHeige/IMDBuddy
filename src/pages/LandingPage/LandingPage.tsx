@@ -5,8 +5,6 @@ import MovieDetailed from '../../components/MovieDetailed/MovieDetailed'
 const LandingPage: React.FC = () => {
   return (
     <>
-      {/* Movies */}
-
       <MovieList />
 
       {/* Detailed view of one movie */}

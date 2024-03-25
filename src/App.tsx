@@ -1,3 +1,6 @@
+//React
+import { useState } from 'react'
+
 //Components
 import Header from './components/Header/Header'
 import Search from './components/Search/Search'
@@ -5,7 +8,7 @@ import ErrorMessage from './components/ErrorMessage/ErrorMessage'
 
 //Styles
 import { ThemeProvider } from '@emotion/react'
-import { darkTheme } from './styles/theme'
+import { darkTheme, lightTheme } from './styles/theme'
 
 //Mui
 import { CssBaseline } from '@mui/material'
@@ -17,12 +20,14 @@ import LandingPage from './pages/LandingPage/LandingPage'
 import SearchContextProvider from './contexts/SearchContextProvider'
 
 function App() {
+  const [darkMode, setDarkMode] = useState<boolean>(true)
+
   return (
-    <ThemeProvider theme={darkTheme}>
+    <ThemeProvider theme={darkMode ? darkTheme : lightTheme}>
       <CssBaseline />
       <SearchContextProvider>
         {/* Header component */}
-        <Header>
+        <Header darkMode={darkMode} toggleTheme={() => setDarkMode(!darkMode)}>
           <Search />
         </Header>
 

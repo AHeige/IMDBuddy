@@ -18,6 +18,8 @@ const SearchContextProvider: React.FC<SearchProviderProps> = ({ children }) => {
   const [totalPages, setTotalPages] = useState<number | undefined>()
   const [clickedModal, setClickedModal] = useState<boolean>(false)
   const [chosenMovieId, setChosenMovieId] = useState<string>('')
+  const [searchText, setSearchText] = useState('')
+  const [searchDate, setSearchDate] = useState<number | null>(null)
 
   return (
     <SearchContext.Provider
@@ -34,6 +36,10 @@ const SearchContextProvider: React.FC<SearchProviderProps> = ({ children }) => {
         setClickedModal,
         chosenMovieId,
         setChosenMovieId,
+        searchText,
+        setSearchText,
+        searchDate,
+        setSearchDate,
       }}
     >
       {children}

@@ -14,11 +14,16 @@ import getMovies from '../../services/getMovies/getMovies'
 import { useSearchContext } from '../../hooks/useSearchContext'
 
 const Search: React.FC = () => {
-  const { setIsLoading, setTotalPages, setMovies, setErrorMsg } =
-    useSearchContext()
-  //State management
-  const [searchText, setSearchText] = useState('')
-  const [searchDate, setSearchDate] = useState<number | null>(null)
+  const {
+    setIsLoading,
+    setTotalPages,
+    setMovies,
+    setErrorMsg,
+    searchText,
+    setSearchText,
+    searchDate,
+    setSearchDate,
+  } = useSearchContext()
 
   //Calculating pages for Pagination
   const calculatePages = (totalResults: string) => {

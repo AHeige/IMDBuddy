@@ -2,6 +2,10 @@ import { createContext, SetStateAction } from 'react'
 import { Movie } from '../interface/Movie'
 
 export interface SearchContextType {
+  searchText: string
+  setSearchText: React.Dispatch<SetStateAction<string>>
+  searchDate: number | null
+  setSearchDate: React.Dispatch<SetStateAction<number | null>>
   movies: Movie[] | undefined
   setMovies: React.Dispatch<SetStateAction<Movie[] | undefined>>
   errorMsg: string | undefined

@@ -1,19 +1,16 @@
-//Interface
 import { useEffect, useState } from 'react'
+//Interface
 import { MovieDetails } from '../../interface/Movie'
+
+//Services
 import getMovieDetails from '../../services/getMovieDetails/getMovieDetails'
 
 //Mui
-import {
-  Button,
-  Card,
-  CardActions,
-  CardContent,
-  CardMedia,
-  Modal,
-  Skeleton,
-} from '@mui/material'
+import { Card, CardActions, CardContent, Modal, Skeleton } from '@mui/material'
+
+//Context
 import { useSearchContext } from '../../hooks/useSearchContext'
+import MovieDetailedContent from './components/MovieDetailedContent'
 
 const MovieDetailed: React.FC = () => {
   const { clickedModal, chosenMovieId, setErrorMsg, setClickedModal } =
@@ -51,14 +48,6 @@ const MovieDetailed: React.FC = () => {
     requstDetails()
   }, [chosenMovieId, clickedModal, setErrorMsg])
 
-  const style = {
-    position: 'absolute',
-    top: '50%',
-    left: '50%',
-    transform: 'translate(-50%, -50%)',
-    width: 400,
-  }
-
   const handleClose = () => {
     setClickedModal(false)
     setMovieDetails(undefined)
@@ -70,7 +59,16 @@ const MovieDetailed: React.FC = () => {
       <Modal open onClose={handleClose}>
         <>
           {isLoading && (
-            <Card sx={style} style={{ height: '580px' }}>
+            <Card
+              sx={{
+                position: 'absolute',
+                top: '50%',
+                left: '50%',
+                transform: 'translate(-50%, -50%)',
+                width: 400,
+              }}
+              style={{ height: '580px' }}
+            >
               <Skeleton height={200} />
               <CardContent>
                 {Array.from({ length: 10 }).map((_, i) => (
@@ -83,20 +81,7 @@ const MovieDetailed: React.FC = () => {
             </Card>
           )}
           {!isLoading && movieDetails && (
-            <Card sx={style}>
-              <CardMedia sx={{ height: '200px' }} image={movieDetails.Poster} />
-              <CardContent>
-                <h3>{movieDetails.Title}</h3>
-                <p>{movieDetails.Plot}</p>
-                <p>
-                  Cast <br /> {movieDetails.Actors}
-                </p>
-                <p>{movieDetails.Writer}</p>
-              </CardContent>
-              <CardActions>
-                <Button size='small'>Read more</Button>
-              </CardActions>
-            </Card>
+            <MovieDetailedContent movieDetails={movieDetails} />
           )}
         </>
       </Modal>

@@ -1,7 +1,10 @@
-import { ReactNode } from 'react'
+import React, { ReactNode } from 'react'
 
 //MUI
 import { AppBar, Toolbar } from '@mui/material'
+import IconButton from '@mui/material/IconButton'
+import Brightness4Icon from '@mui/icons-material/Brightness4'
+import Brightness7Icon from '@mui/icons-material/Brightness7'
 
 //Styles
 import './Header.css'
@@ -10,6 +13,8 @@ import './Header.css'
 
 interface HeaderProps {
   children?: ReactNode
+  toggleTheme: () => void
+  darkMode: boolean
 }
 
 /**
@@ -17,7 +22,7 @@ interface HeaderProps {
  * @param {ChildNode} children
  * @returns {ReactNode} A react element that renders an header with Toolbar and child elements
  */
-const Header: React.FC<HeaderProps> = ({ children }) => {
+const Header: React.FC<HeaderProps> = ({ children, toggleTheme, darkMode }) => {
   return (
     <>
       <AppBar position='relative'>
@@ -29,6 +34,9 @@ const Header: React.FC<HeaderProps> = ({ children }) => {
           }}
         >
           {children}
+          <IconButton sx={{ ml: 1 }} onClick={toggleTheme} color='inherit'>
+            {darkMode ? <Brightness7Icon /> : <Brightness4Icon />}
+          </IconButton>
         </Toolbar>
       </AppBar>
     </>
