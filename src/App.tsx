@@ -13,15 +13,16 @@ import { darkTheme } from './styles/theme'
 import { CssBaseline } from '@mui/material'
 
 //Interfaces
-import { Movie, MovieDetails } from './interface/Movie'
+import { Movie } from './interface/Movie'
 import MovieList from './components/MovieList/MovieList'
 import MovieDetailed from './components/MovieDetailed/MovieDetailed'
 
 function App() {
   const [isLoading, setIsLoading] = useState<boolean>(false)
-  const [errorMsg, setErrorMsg] = useState<string | undefined>(undefined)
+  const [errorMsg, setErrorMsg] = useState<string | undefined>()
   const [movies, setMovies] = useState<Movie[]>()
-  const [chosenMovie, setChosenMovie] = useState<MovieDetails | undefined>()
+  const [chosenMovieId, setChosenMovieId] = useState<string | undefined>()
+  const [clickedModal, setClickedModal] = useState<boolean>(false)
 
   return (
     <ThemeProvider theme={darkTheme}>
@@ -37,16 +38,21 @@ function App() {
       </Header>
 
       {/* Detailed view of one movie */}
-      {chosenMovie && (
-        <MovieDetailed movie={chosenMovie} setChosenMovie={setChosenMovie} />
+      {chosenMovieId && (
+        <MovieDetailed
+          chosenMovieId={chosenMovieId}
+          setErrorMsg={setErrorMsg}
+          clickedModal={clickedModal}
+          setClickedModal={setClickedModal}
+        />
       )}
 
       {/* Movies  */}
       <MovieList
         isLoading={isLoading}
         movies={movies}
-        setErrorMsg={setErrorMsg}
-        setChosenMovie={setChosenMovie}
+        setChosenMovieId={setChosenMovieId}
+        setClickedModal={setClickedModal}
       />
 
       {/* Error handling */}

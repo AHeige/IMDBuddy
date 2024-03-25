@@ -1,37 +1,26 @@
 //Mui
 import Card from '@mui/material/Card'
 
-//Services
-import getMovieDetails from '../../services/getMovieDetails/getMovieDetails'
-
 //Interface
-import { Movie, MovieDetails } from '../../interface/Movie'
+import { Movie } from '../../interface/Movie'
+import React from 'react'
 
 interface MovieCardsProps {
   movies: Movie[] | undefined
   isLoading: boolean
-  setErrorMsg: React.Dispatch<React.SetStateAction<string | undefined>>
-  setChosenMovie: React.Dispatch<React.SetStateAction<MovieDetails | undefined>>
+  setChosenMovieId: React.Dispatch<React.SetStateAction<string | undefined>>
+  setClickedModal: React.Dispatch<React.SetStateAction<boolean>>
 }
 
 const MovieList: React.FC<MovieCardsProps> = ({
   movies,
   isLoading,
-  setErrorMsg,
-  setChosenMovie,
+  setChosenMovieId,
+  setClickedModal,
 }) => {
   const handleClick = async (imdbID: string) => {
-    try {
-      const response = await getMovieDetails(imdbID)
-      if (response.data.Response === 'True') {
-        setChosenMovie(response.data)
-      } else {
-        setErrorMsg(response.data.Error)
-        throw new Error(response.data.Error)
-      }
-    } catch (err) {
-      throw new Error(err)
-    }
+    setChosenMovieId(imdbID)
+    setClickedModal(true)
   }
 
   return (
