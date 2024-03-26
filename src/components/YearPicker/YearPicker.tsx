@@ -4,9 +4,6 @@ import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs'
 import { LocalizationProvider } from '@mui/x-date-pickers'
 import { Grid } from '@mui/material'
 
-//css
-import './YearPicker.css'
-
 //Date Library
 import dayjs from 'dayjs'
 
@@ -17,7 +14,7 @@ interface YearPickerProps {
 
 const YearPicker: React.FC<YearPickerProps> = ({ value, onChange }) => {
   return (
-    <Grid item xs={3}>
+    <Grid item xs={4}>
       <LocalizationProvider dateAdapter={AdapterDayjs}>
         <DatePicker
           aria-label='Select year'

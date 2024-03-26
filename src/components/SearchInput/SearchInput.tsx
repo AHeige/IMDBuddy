@@ -1,5 +1,4 @@
 import { Grid, Input } from '@mui/material'
-import './SearchInput.css'
 
 interface SearchInputProps {
   value: string

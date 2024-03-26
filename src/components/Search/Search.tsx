@@ -1,6 +1,3 @@
-//React
-import { useState } from 'react'
-
 //Mui
 import { Grid, Button } from '@mui/material'
 
@@ -11,19 +8,22 @@ import YearPicker from '../YearPicker/YearPicker'
 //Services
 import getMovies from '../../services/getMovies/getMovies'
 
+//Context
 import { useSearchContext } from '../../hooks/useSearchContext'
+import { useFeedbackContext } from '../../hooks/useFeedbackContext'
 
 const Search: React.FC = () => {
   const {
     setIsLoading,
     setTotalPages,
     setMovies,
-    setErrorMsg,
     searchText,
     setSearchText,
     searchDate,
     setSearchDate,
   } = useSearchContext()
+
+  const { setErrorMessage } = useFeedbackContext()
 
   //Calculating pages for Pagination
   const calculatePages = (totalResults: string) => {
@@ -42,11 +42,11 @@ const Search: React.FC = () => {
         setTotalPages(calculatePages(response.data.totalResults))
         setMovies(response.data.Search)
       } else {
-        setErrorMsg(response.data.Error)
+        setErrorMessage('No movies found - try another search!')
       }
       setIsLoading(false)
     } catch (err) {
-      setErrorMsg(err)
+      setErrorMessage(err)
       throw new Error(err)
     }
   }

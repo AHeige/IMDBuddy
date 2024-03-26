@@ -10,6 +10,7 @@ const LandingPage: React.FC = () => {
       {/* Detailed view of one movie */}
       <MovieDetailed />
     </>
+    
   )
 }
 

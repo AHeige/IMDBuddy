@@ -4,21 +4,13 @@ import {
   CardMedia,
   Box,
   CardActions,
-  IconButton,
   CardContent,
   Chip,
-  Tooltip,
 } from '@mui/material'
-
-//Icons
-import FavoriteIcon from '@mui/icons-material/Favorite'
-import FavoriteIconBorder from '@mui/icons-material/FavoriteBorder'
 
 //Interface
 import { MovieDetails } from '../../../interface/Movie'
-
-//Hooks
-import { useFavourites } from '../../../hooks/useFavourites'
+import LikeButton from '../../LikeButton/LikeButton'
 
 interface MovieDetailedContentProps {
   movieDetails: MovieDetails
@@ -27,8 +19,6 @@ interface MovieDetailedContentProps {
 const MovieDetailedContent: React.FC<MovieDetailedContentProps> = ({
   movieDetails,
 }) => {
-  const { saveFavourite, removeFavourite, isFavourite } = useFavourites()
-
   return (
     <Card
       sx={{
@@ -52,25 +42,7 @@ const MovieDetailedContent: React.FC<MovieDetailedContentProps> = ({
               width: 'fit-content',
             }}
           >
-            {isFavourite(movieDetails.imdbID) ? (
-              <Tooltip title={'Remove from favourites'}>
-                <IconButton
-                  onClick={() => removeFavourite(movieDetails.imdbID)}
-                  aria-label='remove from favorites'
-                >
-                  <FavoriteIcon />
-                </IconButton>
-              </Tooltip>
-            ) : (
-              <Tooltip title={'Add to favourites'}>
-                <IconButton
-                  onClick={() => saveFavourite(movieDetails)}
-                  aria-label='add to favorites'
-                >
-                  <FavoriteIconBorder />
-                </IconButton>
-              </Tooltip>
-            )}
+            <LikeButton imdbID={movieDetails.imdbID} />
           </CardActions>
         </Box>
       </CardMedia>

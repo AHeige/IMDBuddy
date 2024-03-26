@@ -11,10 +11,12 @@ import { Card, CardActions, CardContent, Modal, Skeleton } from '@mui/material'
 //Context
 import { useSearchContext } from '../../hooks/useSearchContext'
 import MovieDetailedContent from './components/MovieDetailedContent'
+import { useFeedbackContext } from '../../hooks/useFeedbackContext'
 
 const MovieDetailed: React.FC = () => {
-  const { clickedModal, chosenMovieId, setErrorMsg, setClickedModal } =
-    useSearchContext()
+  const { clickedModal, chosenMovieId, setClickedModal } = useSearchContext()
+
+  const { setErrorMessage } = useFeedbackContext()
 
   const [isLoading, setIsLoading] = useState<boolean>(false)
   const [movieDetails, setMovieDetails] = useState<MovieDetails | undefined>(
@@ -35,18 +37,18 @@ const MovieDetailed: React.FC = () => {
           setMovieDetails(response.data)
         } else {
           setIsLoading(false)
-          setErrorMsg(response.data.Error)
+          setErrorMessage(response.data.Error)
           throw new Error(response.data.Error)
         }
       } catch (err) {
         setIsLoading(false)
-        setErrorMsg('An error occured when requesting movie details')
+        setErrorMessage('An error occured when requesting movie details')
         throw new Error(err)
       }
     }
 
     requstDetails()
-  }, [chosenMovieId, clickedModal, setErrorMsg])
+  }, [chosenMovieId, clickedModal, setErrorMessage])
 
   const handleClose = () => {
     setClickedModal(false)

@@ -1,18 +1,19 @@
 import React from 'react'
 
 //Mui
-import { Chip, Grid, Pagination } from '@mui/material'
+import { Badge, Chip, Grid, Pagination } from '@mui/material'
 
 //Services
 import getMovies from '../../services/getMovies/getMovies'
 
 //Context
 import { useSearchContext } from '../../hooks/useSearchContext'
+import { useFavouritesContext } from '../../hooks/useFavouritesContext'
+import { useFeedbackContext } from '../../hooks/useFeedbackContext'
 
 //Loading component
 import MovieListSkeleton from './components/MovieListSkeleton'
 import MovieListContent from './components/MovieListContent'
-import { useFavourites } from '../../hooks/useFavourites'
 
 /**
  * MovieList consumes the searchresult generated in Search component
@@ -20,7 +21,6 @@ import { useFavourites } from '../../hooks/useFavourites'
  */
 const MovieList: React.FC = () => {
   const {
-    setErrorMsg,
     totalPages,
     isLoading,
     setIsLoading,
@@ -30,7 +30,9 @@ const MovieList: React.FC = () => {
     searchDate,
   } = useSearchContext()
 
-  const { favourites } = useFavourites()
+  const { setErrorMessage } = useFeedbackContext()
+
+  const { favourites } = useFavouritesContext()
 
   const onPagination = async (page: number) => {
     setIsLoading(true)
@@ -41,7 +43,7 @@ const MovieList: React.FC = () => {
         setMovies(response.data.Search)
       } else {
         setIsLoading(false)
-        setErrorMsg(`Could not load movies: ${response.data.Error}`)
+        setErrorMessage(`Could not load movies: ${response.data.Error}`)
         throw new Error(response.data.Error)
       }
     } catch (err) {
@@ -59,7 +61,15 @@ const MovieList: React.FC = () => {
       {/* Favourites */}
       {!movies && favourites.length > 0 && (
         <>
-          <Chip sx={{ marginTop: '1em' }} color='success' label='Favourites' />
+          <Grid
+            item
+            xs={12}
+            style={{ display: 'flex', justifyContent: 'center' }}
+          >
+            <Badge badgeContent={favourites.length} color='info'>
+              <Chip color='default' label='Favourites' />
+            </Badge>
+          </Grid>
           <MovieListContent movies={favourites} />
         </>
       )}

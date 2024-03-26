@@ -1,0 +1,8 @@
+.movieItem:hover{
+    transform: scale(1.05);
+    transition: all 500ms;
+}
+
+.movieItem{
+    transition: all 500ms;
+}

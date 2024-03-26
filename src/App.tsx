@@ -4,7 +4,7 @@ import { useState } from 'react'
 //Components
 import Header from './components/Header/Header'
 import Search from './components/Search/Search'
-import ErrorMessage from './components/ErrorMessage/ErrorMessage'
+import FeedbackMessage from './components/FeedbackMessage/FeedbackMessage'
 
 //Styles
 import { ThemeProvider } from '@emotion/react'
@@ -17,7 +17,9 @@ import { CssBaseline } from '@mui/material'
 import LandingPage from './pages/LandingPage/LandingPage'
 
 //Context
-import SearchContextProvider from './contexts/SearchContextProvider'
+import { SearchProvider } from './contexts/SearchContext/SearchContext'
+import { FavouritesProvider } from './contexts/FavouriteContext/FavouriteContext'
+import { FeedbackProvider } from './contexts/FeedbackContext/FeedbackContext'
 
 function App() {
   const [darkMode, setDarkMode] = useState<boolean>(true)
@@ -25,17 +27,24 @@ function App() {
   return (
     <ThemeProvider theme={darkMode ? darkTheme : lightTheme}>
       <CssBaseline />
-      <SearchContextProvider>
-        {/* Header component */}
-        <Header darkMode={darkMode} toggleTheme={() => setDarkMode(!darkMode)}>
-          <Search />
-        </Header>
+      <FeedbackProvider>
+        <SearchProvider>
+          <FavouritesProvider>
+            {/* Header component */}
+            <Header
+              darkMode={darkMode}
+              toggleTheme={() => setDarkMode(!darkMode)}
+            >
+              <Search />
+            </Header>
 
-        <LandingPage />
+            <LandingPage />
 
-        {/* Error handling */}
-        <ErrorMessage />
-      </SearchContextProvider>
+            {/* Error handling */}
+            <FeedbackMessage />
+          </FavouritesProvider>
+        </SearchProvider>
+      </FeedbackProvider>
     </ThemeProvider>
   )
 }
