@@ -15,7 +15,7 @@ import { CssBaseline } from '@mui/material'
 
 //Pages
 import LandingPage from './pages/LandingPage/LandingPage'
-import Favourites from './pages/LandingPage/Favourites'
+import FavouritePage from './pages/FavouritePage/FavouritePage'
 
 //Context
 import { SearchProvider } from './contexts/SearchContext/SearchContext'
@@ -42,7 +42,7 @@ function App() {
             
             <Routes>
               <Route path='/' Component={LandingPage} />
-              <Route path='/favourites' Component={Favourites}/>
+              <Route path='/favourites' Component={FavouritePage}/>
             </Routes>
           
             {/* Error handling */}

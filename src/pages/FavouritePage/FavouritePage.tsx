@@ -11,7 +11,7 @@ import { useFavouritesContext } from '../../hooks/useFavouritesContext'
 import { sampleMovie } from '../../constants/sampleMovie'
 import { Typography } from '@mui/material'
 
-const Favourites: React.FC = () => {
+const FavouritePage: React.FC = () => {
   const { favourites } = useFavouritesContext()
 
   return (
@@ -49,4 +49,4 @@ const Favourites: React.FC = () => {
   )
 }
 
-export default Favourites
+export default FavouritePage
