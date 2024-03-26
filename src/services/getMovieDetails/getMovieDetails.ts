@@ -16,7 +16,7 @@ const getMovieDetails = async (
 
   try {
     const response: AxiosResponse<Response> = await axios.get(
-      `http://www.omdbapi.com/?i=${id}&apikey=${token}&`
+      `https://www.omdbapi.com/?i=${id}&apikey=${token}&`
     )
 
     return response

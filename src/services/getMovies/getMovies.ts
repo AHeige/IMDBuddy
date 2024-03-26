@@ -18,7 +18,7 @@ const getMovies = async (
 ): Promise<AxiosResponse<Response>> => {
   const token = 'a3c145cf'
 
-  const apiUrl = 'http://www.omdbapi.com/'
+  const apiUrl = 'https://www.omdbapi.com/'
 
   const searchParams = new URLSearchParams({
     s: title,
