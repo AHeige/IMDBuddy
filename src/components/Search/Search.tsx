@@ -21,6 +21,8 @@ const Search: React.FC = () => {
     setSearchText,
     searchDate,
     setSearchDate,
+    setTotalResults,
+    setSearch,
   } = useSearchContext()
 
   const { setErrorMessage } = useFeedbackContext()
@@ -36,11 +38,13 @@ const Search: React.FC = () => {
   const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault()
     setIsLoading(true)
+    setSearch({ title: searchText, year: searchDate })
     try {
       const response = await getMovies(searchText, searchDate, 1)
       if (response.data.Response === 'True') {
         setTotalPages(calculatePages(response.data.totalResults))
         setMovies(response.data.Search)
+        setTotalResults(Number(response.data.totalResults))
       } else {
         setErrorMessage('No movies found - try another search!')
       }

@@ -1,19 +1,19 @@
 import React from 'react'
 
 //Mui
-import { Badge, Chip, Grid, Pagination } from '@mui/material'
+import { Grid, Pagination, Typography } from '@mui/material'
 
 //Services
 import getMovies from '../../services/getMovies/getMovies'
 
 //Context
 import { useSearchContext } from '../../hooks/useSearchContext'
-import { useFavouritesContext } from '../../hooks/useFavouritesContext'
 import { useFeedbackContext } from '../../hooks/useFeedbackContext'
 
 //Loading component
 import MovieListSkeleton from './components/MovieListSkeleton'
 import MovieListContent from './components/MovieListContent'
+import { sampleMovie } from '../../constants/sampleMovie'
 
 /**
  * MovieList consumes the searchresult generated in Search component
@@ -26,18 +26,21 @@ const MovieList: React.FC = () => {
     setIsLoading,
     movies,
     setMovies,
-    searchText,
-    searchDate,
+    totalResults,
+    search,
   } = useSearchContext()
 
   const { setErrorMessage } = useFeedbackContext()
 
-  const { favourites } = useFavouritesContext()
-
   const onPagination = async (page: number) => {
     setIsLoading(true)
     try {
-      const response = await getMovies(searchText, searchDate, page)
+      if (!search) {
+        setIsLoading(false)
+        setErrorMessage("Can't search on nothing!")
+        throw new Error("Can't search on nothing!")
+      }
+      const response = await getMovies(search.title, search.year, page)
       if (response.data.Response === 'True') {
         setIsLoading(false)
         setMovies(response.data.Search)
@@ -58,33 +61,42 @@ const MovieList: React.FC = () => {
       spacing={2}
       sx={{ display: 'flex', justifyContent: 'center', marginTop: 0 }}
     >
-      {/* Favourites */}
-      {!movies && favourites.length > 0 && (
+      {/* If no search has been made */}
+      {!movies && !search && (
         <>
           <Grid
             item
             xs={12}
             style={{ display: 'flex', justifyContent: 'center' }}
           >
-            <Badge badgeContent={favourites.length} color='info'>
-              <Chip color='default' label='Favourites' />
-            </Badge>
+            <Typography variant='body1'>Make a search a find movies like this one</Typography>
           </Grid>
-          <MovieListContent movies={favourites} />
+          <MovieListContent
+            movies={[
+              sampleMovie
+            ]}
+          />
         </>
       )}
 
       {/* Search result */}
-      <Grid item xs={12} sx={{ display: 'flex', justifyContent: 'center' }}>
-        {totalPages && movies && (
-          <Pagination
-            onChange={(_, page) => onPagination(page)}
-            count={totalPages}
-            variant='outlined'
-            color='secondary'
-          />
-        )}
-      </Grid>
+      {totalPages && movies && (
+        <>
+          <Grid item xs={12} sx={{ display: 'flex', justifyContent: 'center' }}>
+            <Typography variant='button'>
+              {totalResults} hits on "{search?.title}"
+            </Typography>
+          </Grid>
+          <Grid item xs={12} sx={{ display: 'flex', justifyContent: 'center' }}>
+            <Pagination
+              onChange={(_, page) => onPagination(page)}
+              count={totalPages}
+              variant='outlined'
+              color='secondary'
+            />
+          </Grid>
+        </>
+      )}
       {isLoading ? <MovieListSkeleton /> : <MovieListContent movies={movies} />}
     </Grid>
   )

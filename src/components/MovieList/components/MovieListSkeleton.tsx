@@ -12,6 +12,7 @@ const MovieListSkeleton = () => {
               sx={{ padding: 0, margin: 0 }}
               width={'350px'}
               height={'140px'}
+              animation="wave"
             />
             <CardContent>
               <Skeleton />

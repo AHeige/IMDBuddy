@@ -15,11 +15,13 @@ import { CssBaseline } from '@mui/material'
 
 //Pages
 import LandingPage from './pages/LandingPage/LandingPage'
+import Favourites from './pages/LandingPage/Favourites'
 
 //Context
 import { SearchProvider } from './contexts/SearchContext/SearchContext'
 import { FavouritesProvider } from './contexts/FavouriteContext/FavouriteContext'
 import { FeedbackProvider } from './contexts/FeedbackContext/FeedbackContext'
+import {  Routes, Route } from 'react-router-dom'
 
 function App() {
   const [darkMode, setDarkMode] = useState<boolean>(true)
@@ -37,9 +39,12 @@ function App() {
             >
               <Search />
             </Header>
-
-            <LandingPage />
-
+            
+            <Routes>
+              <Route path='/' Component={LandingPage} />
+              <Route path='/favourites' Component={Favourites}/>
+            </Routes>
+          
             {/* Error handling */}
             <FeedbackMessage />
           </FavouritesProvider>
