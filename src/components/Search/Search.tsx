@@ -11,6 +11,7 @@ import getMovies from '../../services/getMovies/getMovies'
 //Context
 import { useSearchContext } from '../../hooks/useSearchContext'
 import { useFeedbackContext } from '../../hooks/useFeedbackContext'
+import { useNavigate } from 'react-router-dom'
 
 const Search: React.FC = () => {
   const {
@@ -26,6 +27,7 @@ const Search: React.FC = () => {
   } = useSearchContext()
 
   const { setErrorMessage } = useFeedbackContext()
+  const navigate = useNavigate()
 
   //Calculating pages for Pagination
   const calculatePages = (totalResults: string) => {
@@ -39,6 +41,7 @@ const Search: React.FC = () => {
     event.preventDefault()
     setIsLoading(true)
     setSearch({ title: searchText, year: searchDate })
+    navigate('/')
     try {
       const response = await getMovies(searchText, searchDate, 1)
       if (response.data.Response === 'True') {
