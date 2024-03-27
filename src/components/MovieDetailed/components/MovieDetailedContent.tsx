@@ -6,6 +6,8 @@ import {
   CardActions,
   CardContent,
   Chip,
+  Button,
+  Stack,
 } from '@mui/material'
 
 //Interface
@@ -14,10 +16,12 @@ import LikeButton from '../../LikeButton/LikeButton'
 
 interface MovieDetailedContentProps {
   movieDetails: MovieDetails
+  handleClose: () => void
 }
 
 const MovieDetailedContent: React.FC<MovieDetailedContentProps> = ({
   movieDetails,
+  handleClose,
 }) => {
   return (
     <Card
@@ -47,34 +51,49 @@ const MovieDetailedContent: React.FC<MovieDetailedContentProps> = ({
         </Box>
       </CardMedia>
       <CardContent>
-        <Chip
-          color={Number(movieDetails.imdbRating) > 6 ? 'success' : 'warning'}
-          label={movieDetails.imdbRating + '/10'}
-          aria-label='IMDB Rating'
-          title='IMDB Rating'
-        />
-        <Chip
-          sx={{ marginLeft: 1 }}
-          color='default'
-          label={movieDetails.Year}
-          aria-label='Release year'
-          title='Release year'
-        />
-        <Chip
-          sx={{ marginLeft: 1 }}
-          color='default'
-          label={movieDetails.Type.toUpperCase()}
-          aria-label='Release year'
-          title='Release year'
-        />
+        <Stack spacing={{ xs: 1 }} direction='row' useFlexGap flexWrap='wrap'>
+          <Chip
+            color={Number(movieDetails.imdbRating) > 6 ? 'success' : 'warning'}
+            label={movieDetails.imdbRating + '/10'}
+            aria-label='IMDB Rating'
+            title='IMDB Rating'
+          />
+          <Chip
+            color='default'
+            label={movieDetails.Year}
+            aria-label='Release year'
+            title='Release year'
+          />
+          <Chip
+            color='default'
+            label={movieDetails.Type.toUpperCase()}
+            aria-label='Type'
+            title='Type'
+          />
+          <Chip
+            color='default'
+            label={movieDetails.Runtime.toUpperCase()}
+            aria-label='Run time'
+            title='Run time'
+          />
+          <Chip
+            color='default'
+            label={movieDetails.Director.toUpperCase()}
+            aria-label='Director'
+            title='Director'
+          />
+        </Stack>
         <h3>{movieDetails.Title}</h3>
 
         <p>{movieDetails.Plot}</p>
         <p>
-          Cast <br /> {movieDetails.Actors}
+          Cast <br/>
+          {movieDetails.Actors}
         </p>
-        <p>{movieDetails.Writer}</p>
       </CardContent>
+      <CardActions>
+        <Button onClick={handleClose}>Close</Button>
+      </CardActions>
     </Card>
   )
 }

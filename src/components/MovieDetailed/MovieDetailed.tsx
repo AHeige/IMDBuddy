@@ -6,13 +6,20 @@ import { MovieDetails } from '../../interface/Movie'
 import getMovieDetails from '../../services/getMovieDetails/getMovieDetails'
 
 //Mui
-import { Card, CardActions, CardContent, Modal, Skeleton } from '@mui/material'
+import {  Modal } from '@mui/material'
 
 //Context
 import { useSearchContext } from '../../hooks/useSearchContext'
-import MovieDetailedContent from './components/MovieDetailedContent'
 import { useFeedbackContext } from '../../hooks/useFeedbackContext'
 
+//Components
+import MovieDetailedContent from './components/MovieDetailedContent'
+import MovieDetailsLoading from './components/MovieDetailsLoading'
+
+/**
+ * @description Detailed view of a movie
+ * @returns {ReactNode} A react element returning a Modal
+ */
 const MovieDetailed: React.FC = () => {
   const { clickedModal, chosenMovieId, setClickedModal } = useSearchContext()
 
@@ -61,29 +68,10 @@ const MovieDetailed: React.FC = () => {
       <Modal open onClose={handleClose}>
         <>
           {isLoading && (
-            <Card
-              sx={{
-                position: 'absolute',
-                top: '50%',
-                left: '50%',
-                transform: 'translate(-50%, -50%)',
-                width: 400,
-              }}
-              style={{ height: '580px' }}
-            >
-              <Skeleton height={200} />
-              <CardContent>
-                {Array.from({ length: 10 }).map((_, i) => (
-                  <Skeleton key={i} />
-                ))}
-              </CardContent>
-              <CardActions>
-                <Skeleton width={'15%'} />
-              </CardActions>
-            </Card>
+            <MovieDetailsLoading/>
           )}
           {!isLoading && movieDetails && (
-            <MovieDetailedContent movieDetails={movieDetails} />
+            <MovieDetailedContent movieDetails={movieDetails} handleClose={handleClose}/>
           )}
         </>
       </Modal>

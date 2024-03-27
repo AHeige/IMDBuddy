@@ -22,6 +22,7 @@ import { SearchProvider } from './contexts/SearchContext/SearchContext'
 import { FavouritesProvider } from './contexts/FavouriteContext/FavouriteContext'
 import { FeedbackProvider } from './contexts/FeedbackContext/FeedbackContext'
 import {  Routes, Route } from 'react-router-dom'
+import MovieDetailed from './components/MovieDetailed/MovieDetailed'
 
 function App() {
   const [darkMode, setDarkMode] = useState<boolean>(true)
@@ -39,12 +40,16 @@ function App() {
             >
               <Search />
             </Header>
-            
+
             <Routes>
-              <Route path='/' Component={LandingPage} />
-              <Route path='/favourites' Component={FavouritePage}/>
+              <Route path='/' element={<LandingPage />} />
+              <Route path='/favourites' element={<FavouritePage />}/>
+                
             </Routes>
-          
+
+            {/* Modal to show details of Movies when clicked on!*/}
+            <MovieDetailed />
+
             {/* Error handling */}
             <FeedbackMessage />
           </FavouritesProvider>

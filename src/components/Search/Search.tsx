@@ -60,7 +60,7 @@ const Search: React.FC = () => {
 
   return (
     <form onSubmit={handleSubmit}>
-      <Grid container flexDirection={'row'} spacing={'1em'}>
+      <Grid container flexDirection={'row'} spacing={'1em'} sx={{alignItems: 'center'}}>
         <SearchInput
           value={searchText}
           onChange={(newText) => {

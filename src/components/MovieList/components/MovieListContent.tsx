@@ -18,7 +18,6 @@ import { useSearchContext } from '../../../hooks/useSearchContext'
 import LikeButton from '../../LikeButton/LikeButton'
 
 import './MovieListContent.css'
-
 interface MovieListContentProps {
   movies: Movie[] | undefined
 }
@@ -28,7 +27,7 @@ export const MovieListContent: React.FC<MovieListContentProps> = ({
 }) => {
   const { setChosenMovieId, setClickedModal } = useSearchContext()
 
-  const handleClick = async (imdbID: string) => {
+  const handleClick = (imdbID: string) => {
     setChosenMovieId(imdbID)
     setClickedModal(true)
   }
@@ -53,7 +52,7 @@ export const MovieListContent: React.FC<MovieListContentProps> = ({
                       sx={{
                         background: '#212121',
                         width: 'fit-content',
-                        marginTop: '-0.em'
+                        marginTop: '-0.em',
                       }}
                     >
                       <LikeButton imdbID={movie.imdbID} />

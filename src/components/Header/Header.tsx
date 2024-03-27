@@ -26,15 +26,11 @@ const Header: React.FC<HeaderProps> = ({ children, toggleTheme, darkMode }) => {
 
   return (
     <>
-      <AppBar position='relative' color='default'>
+      <AppBar position='relative' color='default' sx={{display: 'flex', alignItems: 'center', justifyContent: 'center'}} >
         <Toolbar
           style={{
             padding: '1em',
-            display: 'flex',
-            justifyContent: 'center',
-            alignContent: 'flex-start',
-            // flexWrap: 'wrap',
-            alignItems: 'flex-start',
+            alignItems: 'center',
           }}
         >
           {children}

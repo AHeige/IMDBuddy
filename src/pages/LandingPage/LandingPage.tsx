@@ -1,6 +1,6 @@
 //Components
 import MovieList from '../../components/MovieList/MovieList'
-import MovieDetailed from '../../components/MovieDetailed/MovieDetailed'
+
 
 const LandingPage: React.FC = () => {
 
@@ -10,8 +10,7 @@ const LandingPage: React.FC = () => {
 
       <MovieList />
       
-      {/* Detailed view of one movie */}
-      <MovieDetailed />
+   
     </>
   )
 }

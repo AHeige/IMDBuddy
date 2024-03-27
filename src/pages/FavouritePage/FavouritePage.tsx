@@ -26,6 +26,7 @@ const FavouritePage: React.FC = () => {
         </Badge>
       </Grid>
       <MovieListContent movies={favourites} />
+      {/* If no favourites are set a sample movie is shown */}
       {favourites.length === 0 && (
         <>
           <Grid
@@ -35,16 +36,16 @@ const FavouritePage: React.FC = () => {
           >
             <Typography>
               Use the heart 💖 to 'like' a movie and save it here.
-              <br/>
-              <br/>
+              <br />
+              <br />
               Maybe try on this one?
             </Typography>
-
           </Grid>
 
           <MovieListContent movies={[sampleMovie]} />
         </>
       )}
+     
     </Grid>
   )
 }
