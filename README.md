@@ -18,7 +18,7 @@ IMDbuddy is a web application that allows users to search for movies, view detai
 
 - Search for movies by title or release year
 - View detailed information about each movie, including title, release year, genre, plot, and more
-- Save favorite movies to user accounts (planned feature)
+- Save favorite movies locally on your device (via localstorage)
 
 ## Technologies Used
 
