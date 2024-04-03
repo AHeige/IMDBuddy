@@ -6,7 +6,7 @@ import { MovieDetails } from '../../interface/Movie'
 import getMovieDetails from '../../services/getMovieDetails/getMovieDetails'
 
 //Mui
-import {  Modal } from '@mui/material'
+import { Modal } from '@mui/material'
 
 //Context
 import { useSearchContext } from '../../hooks/useSearchContext'
@@ -26,9 +26,7 @@ const MovieDetailed: React.FC = () => {
   const { setErrorMessage } = useFeedbackContext()
 
   const [isLoading, setIsLoading] = useState<boolean>(false)
-  const [movieDetails, setMovieDetails] = useState<MovieDetails | undefined>(
-    undefined
-  )
+  const [movieDetails, setMovieDetails] = useState<MovieDetails | undefined>(undefined)
 
   useEffect(() => {
     if (!clickedModal) {
@@ -44,12 +42,14 @@ const MovieDetailed: React.FC = () => {
           setMovieDetails(response.data)
         } else {
           setIsLoading(false)
-          setErrorMessage(response.data.Error)
+          setErrorMessage("Could not load movie details.")
+          handleClose()
           throw new Error(response.data.Error)
         }
       } catch (err) {
+        handleClose()
         setIsLoading(false)
-        setErrorMessage('An error occured when requesting movie details')
+        setErrorMessage('Could not load movie details. Check your internet connection and try again.')
         throw new Error(err)
       }
     }
@@ -67,12 +67,8 @@ const MovieDetailed: React.FC = () => {
     chosenMovieId && (
       <Modal open onClose={handleClose}>
         <>
-          {isLoading && (
-            <MovieDetailsLoading/>
-          )}
-          {!isLoading && movieDetails && (
-            <MovieDetailedContent movieDetails={movieDetails} handleClose={handleClose}/>
-          )}
+          {isLoading && <MovieDetailsLoading />}
+          {!isLoading && movieDetails && <MovieDetailedContent movieDetails={movieDetails} handleClose={handleClose} />}
         </>
       </Modal>
     )
