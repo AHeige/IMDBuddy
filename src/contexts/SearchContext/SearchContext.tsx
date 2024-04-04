@@ -1,10 +1,5 @@
 //React
-import React, {
-  ReactNode,
-  useState,
-  createContext,
-  SetStateAction,
-} from 'react'
+import React, { ReactNode, useState, createContext, SetStateAction } from 'react'
 
 //Interface
 import { Movie } from '../../interface/Movie'
@@ -35,9 +30,7 @@ export interface SearchContextType {
   setClickedModal: React.Dispatch<SetStateAction<boolean>>
 }
 
-export const SearchContext = createContext<SearchContextType | undefined>(
-  undefined
-)
+export const SearchContext = createContext<SearchContextType | undefined>(undefined)
 
 export const SearchProvider: React.FC<SearchProviderProps> = ({ children }) => {
   const [isLoading, setIsLoading] = useState<boolean>(false)
@@ -65,12 +58,12 @@ export const SearchProvider: React.FC<SearchProviderProps> = ({ children }) => {
         setChosenMovieId,
         searchText,
         setSearchText,
-        search, 
+        search,
         setSearch,
         searchDate,
         setSearchDate,
         setTotalResults,
-        totalResults
+        totalResults,
       }}
     >
       {children}

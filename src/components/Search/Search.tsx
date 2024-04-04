@@ -39,7 +39,8 @@ const Search: React.FC = () => {
         setMovies(response.data.Search)
         setTotalResults(Number(response.data.totalResults))
       } else {
-        setErrorMessage('No movies found - try another search!')
+        setTotalResults(0)
+        setMovies(undefined)
       }
       setIsLoading(false)
     } catch (err) {
