@@ -47,6 +47,7 @@ export const FavouritesProvider: React.FC<FavouritesProviderProps> = ({
         throw new Error('Could not save movie as a favourite')
       }
     } catch (err) {
+      setErrorMessage('Could not save movie as a favourite. Check your internet connection and try again.')
       throw new Error('err')
     }
   }

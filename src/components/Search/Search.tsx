@@ -14,17 +14,7 @@ import { useFeedbackContext } from '../../hooks/useFeedbackContext'
 import { useNavigate } from 'react-router-dom'
 
 const Search: React.FC = () => {
-  const {
-    setIsLoading,
-    setTotalPages,
-    setMovies,
-    searchText,
-    setSearchText,
-    searchDate,
-    setSearchDate,
-    setTotalResults,
-    setSearch,
-  } = useSearchContext()
+  const { setIsLoading, setTotalPages, setMovies, searchText, setSearchText, searchDate, setSearchDate, setTotalResults, setSearch } = useSearchContext()
 
   const { setErrorMessage } = useFeedbackContext()
   const navigate = useNavigate()
@@ -53,14 +43,15 @@ const Search: React.FC = () => {
       }
       setIsLoading(false)
     } catch (err) {
-      setErrorMessage(err)
+      setIsLoading(false)
+      setErrorMessage('An error occured while searching for movies. Please check your internet connection and try again.')
       throw new Error(err)
     }
   }
 
   return (
     <form onSubmit={handleSubmit}>
-      <Grid container flexDirection={'row'} spacing={'1em'} sx={{alignItems: 'center'}}>
+      <Grid container flexDirection={'row'} spacing={'1em'} sx={{ alignItems: 'center' }}>
         <SearchInput
           value={searchText}
           onChange={(newText) => {
@@ -76,13 +67,7 @@ const Search: React.FC = () => {
         />
         <Grid item>
           {/* Submit button */}
-          <Button
-            aria-label='Submit search'
-            disabled={!searchText}
-            type='submit'
-            variant='contained'
-            color='primary'
-          >
+          <Button aria-label='Submit search' disabled={!searchText} type='submit' variant='contained' color='primary'>
             Search
           </Button>
         </Grid>

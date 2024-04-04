@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useState } from 'react'
 
 //Mui
 import { Grid, Pagination, Typography } from '@mui/material'
@@ -20,15 +20,8 @@ import { sampleMovie } from '../../constants/sampleMovie'
  * @returns
  */
 const MovieList: React.FC = () => {
-  const {
-    totalPages,
-    isLoading,
-    setIsLoading,
-    movies,
-    setMovies,
-    totalResults,
-    search,
-  } = useSearchContext()
+  const { totalPages, isLoading, setIsLoading, movies, setMovies, totalResults, search } = useSearchContext()
+  const [currentPage, setCurrentPage] = useState<number>(1)
 
   const { setErrorMessage } = useFeedbackContext()
 
@@ -42,40 +35,30 @@ const MovieList: React.FC = () => {
       }
       const response = await getMovies(search.title, search.year, page)
       if (response.data.Response === 'True') {
+        setCurrentPage(page)
         setIsLoading(false)
         setMovies(response.data.Search)
       } else {
         setIsLoading(false)
-        setErrorMessage(`Could not load movies: ${response.data.Error}`)
+        setErrorMessage(`Could not load chosen page: ${response.data.Error}`)
         throw new Error(response.data.Error)
       }
     } catch (err) {
       setIsLoading(false)
+      setErrorMessage(`Could not load chosen page. Check your internet connection and try again.`)
       throw new Error(err)
     }
   }
 
   return (
-    <Grid
-      container
-      spacing={2}
-      sx={{ display: 'flex', justifyContent: 'center', marginTop: 0 }}
-    >
+    <Grid container spacing={2} sx={{ display: 'flex', justifyContent: 'center', marginTop: 0 }}>
       {/* If no search has been made */}
-      {!movies && !search && (
+      {!movies && (
         <>
-          <Grid
-            item
-            xs={12}
-            style={{ display: 'flex', justifyContent: 'center' }}
-          >
+          <Grid item xs={12} style={{ display: 'flex', justifyContent: 'center' }}>
             <Typography variant='body1'>Make a search a find movies like this one</Typography>
           </Grid>
-          <MovieListContent
-            movies={[
-              sampleMovie
-            ]}
-          />
+          <MovieListContent movies={[sampleMovie]} />
         </>
       )}
 
@@ -88,12 +71,7 @@ const MovieList: React.FC = () => {
             </Typography>
           </Grid>
           <Grid item xs={12} sx={{ display: 'flex', justifyContent: 'center' }}>
-            <Pagination
-              onChange={(_, page) => onPagination(page)}
-              count={totalPages}
-              variant='outlined'
-              color='secondary'
-            />
+            <Pagination page={currentPage} onChange={(_, page) => onPagination(page)} count={totalPages} variant='outlined' color='secondary' />
           </Grid>
         </>
       )}
