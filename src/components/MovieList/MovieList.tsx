@@ -53,13 +53,19 @@ const MovieList: React.FC = () => {
   return (
     <Grid container spacing={2} sx={{ display: 'flex', justifyContent: 'center', marginTop: 0 }}>
       {/* If no search has been made */}
-      {!movies && (
+      {!movies && !search && (
         <>
           <Grid item xs={12} style={{ display: 'flex', justifyContent: 'center' }}>
             <Typography variant='body1'>Make a search a find movies like this one</Typography>
           </Grid>
           <MovieListContent movies={[sampleMovie]} />
         </>
+      )}
+
+      {totalResults === 0 && (
+        <Grid item xs={12} style={{ display: 'flex', justifyContent: 'center' }}>
+          <Typography>No results... Try another search!</Typography>
+        </Grid>
       )}
 
       {/* Search result */}

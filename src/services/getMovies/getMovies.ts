@@ -11,11 +11,7 @@ interface Response {
   Error?: string
 }
 
-const getMovies = async (
-  title: string,
-  year: number | null,
-  page: number
-): Promise<AxiosResponse<Response>> => {
+const getMovies = async (title: string, year: number | null, page: number): Promise<AxiosResponse<Response>> => {
   const token = 'a3c145cf'
 
   const apiUrl = 'https://www.omdbapi.com/'
